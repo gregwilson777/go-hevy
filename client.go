@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 // apiTransport is a custom transport for API requests
@@ -37,18 +38,20 @@ type paginatedResults struct {
 // Construct a URL for querying the API.
 // if `page` is not 0, append the paginated query strings
 // to the request.
-func (c Client) constructURL(path string, page int, count int) string {
-	url := ""
-	base := fmt.Sprintf("%s/%s/%s", c.ApiURL, c.ApiVersion, path)
-	if page > 0 {
-		url = fmt.Sprintf("%s?page=%d&pageSize=%d", base, page, count)
-	} else {
-		url = base
+func (c Client) constructURL(path string, query map[string]string) string {
+	base := fmt.Sprintf("%s/%s/%s", c.APIURL, c.APIVersion, path)
+
+	queryString := url.Values{}
+	if len(query) > 0 {
+		for k, v := range query {
+			queryString.Add(k, v)
+		}
 	}
-	return url
+
+	return fmt.Sprintf("%s?%s", base, queryString.Encode())
 }
 
-// request a single API endpoint.  Data is writen to the pointer
+// request a single API endpoint.  Data is written to the pointer
 // given in the resp var.
 func (c Client) get(url string, resp any) error {
 	data, err := c.client.Get(url)

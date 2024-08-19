@@ -9,7 +9,7 @@ import (
 )
 
 func TestTransport(t *testing.T) {
-	testServer := httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+	testServer := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, req *http.Request) {
 		userAgent := req.Header.Get("User-Agent")
 		assert.Equal(t, "go-hevy (https://github.com/swrm-io/go-hevy)", userAgent)
 
@@ -20,6 +20,10 @@ func TestTransport(t *testing.T) {
 
 	client := NewClient("my-fake-api-key")
 
-	client.ApiURL = testServer.URL
-	client.client.Get("fake/url")
+	client.APIURL = testServer.URL
+	url := client.constructURL("fake/url", map[string]string{})
+	resp, err := client.client.Get(url)
+	assert.NoError(t, err)
+	defer resp.Body.Close()
+
 }

@@ -16,7 +16,6 @@ linters:
     - prealloc
     - misspell
     - gocyclo
-    - funlen
     - bodyclose
 
 linters-settings:

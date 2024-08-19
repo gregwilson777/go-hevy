@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -21,21 +22,32 @@ func TestWorkout(t *testing.T) {
 			file := fmt.Sprintf("testdata/responses/workout-%s.json", page)
 			data, err := os.ReadFile(file)
 			assert.NoError(t, err)
-			res.Write(data)
+			_, err = res.Write(data)
+			assert.NoError(t, err)
 		case "/v1/workouts/count":
 			data, err := os.ReadFile("testdata/responses/workout-count.json")
 			assert.NoError(t, err)
-			res.Write(data)
+			_, err = res.Write(data)
+			assert.NoError(t, err)
 		case "/v1/workouts/b459cba5-cd6d-463c-abd6-54f8eafcadcb":
 			data, err := os.ReadFile("testdata/responses/single-workout.json")
 			assert.NoError(t, err)
-			res.Write(data)
+			_, err = res.Write(data)
+			assert.NoError(t, err)
+		case "/v1/workouts/events":
+			page := req.URL.Query().Get("page")
+
+			file := fmt.Sprintf("testdata/responses/workout_event-%s.json", page)
+			data, err := os.ReadFile(file)
+			assert.NoError(t, err)
+			_, err = res.Write(data)
+			assert.NoError(t, err)
 		}
 	}))
 	defer srv.Close()
 
 	client := hevy.NewClient("my-fake-api-key")
-	client.ApiURL = srv.URL
+	client.APIURL = srv.URL
 
 	t.Run("Test Paginated Workouts", func(t *testing.T) {
 		workouts, err := client.Workouts()
@@ -60,5 +72,27 @@ func TestWorkout(t *testing.T) {
 		assert.NotEmpty(t, workout)
 		assert.Equal(t, workoutID, workout.ID)
 		assert.Equal(t, "Morning Workout 💪", workout.Title)
+	})
+
+	t.Run("Test Workout Events", func(t *testing.T) {
+		since := time.Now()
+		events, err := client.WorkoutEvents(since)
+		assert.NoError(t, err)
+
+		assert.Len(t, events, 3)
+		updated := 0
+		deleted := 0
+
+		for _, evnt := range events {
+			if evnt.EventType == hevy.DeletedEvent {
+				deleted++
+			}
+			if evnt.EventType == hevy.UpdatedEvent {
+				updated++
+			}
+		}
+
+		assert.Equal(t, 2, updated)
+		assert.Equal(t, 1, deleted)
 	})
 }

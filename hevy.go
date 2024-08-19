@@ -8,8 +8,8 @@ import (
 // Client for working with the Hevy API
 type Client struct {
 	client     http.Client
-	ApiURL     string // Base API URL
-	ApiVersion string // API endpoint version for requests
+	APIURL     string // Base API URL
+	APIVersion string // API endpoint version for requests
 }
 
 // NewClient returns a default client instance
@@ -21,7 +21,7 @@ func NewClient(apiKey string) *Client {
 
 	return &Client{
 		client:     httpClient,
-		ApiURL:     "https://api.hevyapp.com",
-		ApiVersion: "v1",
+		APIURL:     "https://api.hevyapp.com",
+		APIVersion: "v1",
 	}
 }
