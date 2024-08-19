@@ -39,7 +39,7 @@ type paginatedResults struct {
 // if `page` is not 0, append the paginated query strings
 // to the request.
 func (c Client) constructURL(path string, query map[string]string) string {
-	base := fmt.Sprintf("%s/%s/%s", c.ApiURL, c.ApiVersion, path)
+	base := fmt.Sprintf("%s/%s/%s", c.APIURL, c.APIVersion, path)
 
 	queryString := url.Values{}
 	if len(query) > 0 {
@@ -51,7 +51,7 @@ func (c Client) constructURL(path string, query map[string]string) string {
 	return fmt.Sprintf("%s?%s", base, queryString.Encode())
 }
 
-// request a single API endpoint.  Data is writen to the pointer
+// request a single API endpoint.  Data is written to the pointer
 // given in the resp var.
 func (c Client) get(url string, resp any) error {
 	data, err := c.client.Get(url)

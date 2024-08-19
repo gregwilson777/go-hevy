@@ -20,13 +20,14 @@ func TestRoutine(t *testing.T) {
 			file := fmt.Sprintf("testdata/responses/routine-%s.json", page)
 			data, err := os.ReadFile(file)
 			assert.NoError(t, err)
-			res.Write(data)
+			_, err = res.Write(data)
+			assert.NoError(t, err)
 		}
 	}))
 	defer srv.Close()
 
 	client := hevy.NewClient("my-fake-api-key")
-	client.ApiURL = srv.URL
+	client.APIURL = srv.URL
 
 	t.Run("Test Paginated Routines", func(t *testing.T) {
 		routines, err := client.Routines()
