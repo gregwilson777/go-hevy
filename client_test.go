@@ -21,7 +21,8 @@ func TestTransport(t *testing.T) {
 	client := NewClient("my-fake-api-key")
 
 	client.APIURL = testServer.URL
-	resp, err := client.client.Get("fake/url")
+	url := client.constructURL("fake/url", map[string]string{})
+	resp, err := client.client.Get(url)
 	assert.NoError(t, err)
 	defer resp.Body.Close()
 
