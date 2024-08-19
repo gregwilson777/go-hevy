@@ -7,12 +7,16 @@ import (
 )
 
 type SetType string
+type EventType string
 
 const (
 	NormalSet  SetType = "normal"
 	WarmupSet  SetType = "warmup"
 	DropSet    SetType = "dropset"
 	FailureSet SetType = "failure"
+
+	UpdatedEvent EventType = "updated"
+	DeletedEvent EventType = "deleted"
 )
 
 // Base Classes
@@ -54,4 +58,11 @@ type Routine struct {
 	CreatedAt time.Time  `json:"created_at"` // ISO 8601 timestamp of when the routine was created.
 	UpdatedAt time.Time  `json:"updated_at"` // ISO 8601 timestamp of when the routine was last updated.
 	Exercises []Exercise `json:"exercises"`  // Exercise that belong to the workout.
+}
+
+type Event struct {
+	EventType EventType `json:"type"`       // The Type of Event
+	ID        uuid.UUID `json:"id"`         // When deleted, this references the workout that was removed
+	DeletedAt time.Time `json:"deleted_at"` // when the type is deleted, when it was removed
+	Workout   Workout   `json:"workout"`    // On an update, output the workout
 }

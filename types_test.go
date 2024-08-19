@@ -63,4 +63,33 @@ func TestUnmarshal(t *testing.T) {
 		assert.NotEmpty(t, routine.Exercises)
 
 	})
+
+	t.Run("Workout Event Delete", func(t *testing.T) {
+		event := hevy.Event{}
+
+		data, err := os.ReadFile("testdata/base/event_delete.json")
+		assert.NoError(t, err, "error reading testdata/base/event_delete.json")
+		err = json.Unmarshal(data, &event)
+		assert.NoError(t, err, "error unmarshalling testdata/base/event_delete.json")
+
+		assert.NotEmpty(t, event)
+		assert.Equal(t, hevy.DeletedEvent, event.EventType)
+		assert.IsType(t, uuid.UUID{}, event.ID)
+		assert.NotEmpty(t, event.ID)
+		assert.Empty(t, event.Workout)
+	})
+
+	t.Run("Workup Event Update", func(t *testing.T) {
+		event := hevy.Event{}
+		data, err := os.ReadFile("testdata/base/event_update.json")
+		assert.NoError(t, err, "error reading testdata/base/event_update.json")
+		err = json.Unmarshal(data, &event)
+		assert.NoError(t, err, "error unmaarshalling testdata/base/event_update.json")
+
+		assert.NotEmpty(t, event)
+		assert.Equal(t, hevy.UpdatedEvent, event.EventType)
+		assert.Empty(t, event.DeletedAt)
+		assert.Empty(t, event.ID)
+		assert.NotEmpty(t, event.Workout)
+	})
 }
