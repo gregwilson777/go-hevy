@@ -25,6 +25,10 @@ func TestUnmarshal(t *testing.T) {
 		assert.NotEmpty(t, workout.StartTime)
 		assert.NotEmpty(t, workout.EndTime)
 		assert.NotEmpty(t, workout.Exercises)
+
+		assert.Equal(t, float64(1564.8955375529572), workout.VolumeKG())
+		assert.Equal(t, float64(3450), workout.VolumeLB())
+
 	})
 	t.Run("Exercise", func(t *testing.T) {
 		exercise := hevy.Exercise{}
@@ -36,6 +40,10 @@ func TestUnmarshal(t *testing.T) {
 
 		assert.NotEmpty(t, exercise)
 		assert.NotEmpty(t, exercise.Sets)
+
+		assert.Equal(t, float64(1564.8955375529572), exercise.VolumeKG())
+		assert.Equal(t, float64(3450), exercise.VolumeLB())
+
 	})
 	t.Run("Set", func(t *testing.T) {
 		set := hevy.Set{}
@@ -47,6 +55,9 @@ func TestUnmarshal(t *testing.T) {
 
 		assert.NotEmpty(t, set)
 		assert.Equal(t, hevy.WarmupSet, set.SetType)
+
+		assert.Equal(t, float64(650), set.VolumeLB())
+		assert.Equal(t, float64(294.83539113316584), set.VolumeKG())
 	})
 	t.Run("Routine", func(t *testing.T) {
 		routine := hevy.Routine{}

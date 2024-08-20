@@ -1,6 +1,7 @@
 package hevy
 
 import (
+	"math"
 	"time"
 
 	"github.com/google/uuid"
@@ -32,6 +33,22 @@ type Workout struct {
 	Exercises   []Exercise `json:"exercises"`   // Exercise that belong to the workout.
 }
 
+func (w Workout) VolumeKG() float64 {
+	volume := float64(0)
+	for _, e := range w.Exercises {
+		volume = volume + e.VolumeKG()
+	}
+	return volume
+}
+
+func (w Workout) VolumeLB() float64 {
+	volume := float64(0)
+	for _, e := range w.Exercises {
+		volume = volume + e.VolumeLB()
+	}
+	return volume
+}
+
 type Exercise struct {
 	Index               int    `json:"index"`                // Index indicating the order of the exercise in the workout / routine.
 	Title               string `json:"title"`                // Title of the exercise
@@ -41,15 +58,46 @@ type Exercise struct {
 	Sets                []Set  `json:"sets"`                 // List of sets for the exercise.
 }
 
+func (e Exercise) VolumeKG() float64 {
+	volume := float64(0)
+	for _, s := range e.Sets {
+		volume = volume + s.VolumeKG()
+	}
+	return volume
+}
+
+func (e Exercise) VolumeLB() float64 {
+	volume := float64(0)
+	for _, s := range e.Sets {
+		volume = volume + s.VolumeLB()
+	}
+	return volume
+}
+
 // Set of the specifc workout
 type Set struct {
 	Index           int     `json:"index"`            // Index indicating the order of the set in the workout.
 	SetType         SetType `json:"set_type"`         // The type of set.
-	WeightKG        float32 `json:"weight_kg"`        // Weight lifted in kilograms.
+	WeightKG        float64 `json:"weight_kg"`        // Weight lifted in kilograms.
 	Reps            int     `json:"reps"`             // Number of reps logged for the set
-	DistanceMeters  float32 `json:"distance_meters"`  // Number of meters logged for the set
+	DistanceMeters  float64 `json:"distance_meters"`  // Number of meters logged for the set
 	DurationSeconds int     `json:"duration_seconds"` // Number of seconds logged for the set
-	RPE             float32 `json:"rpe"`              // RPE (Relative perceived exertion) value logged for the set
+	RPE             float64 `json:"rpe"`              // RPE (Relative perceived exertion) value logged for the set
+}
+
+// Convert KG to LBs
+func (s Set) KGtoLB() float64 {
+	return math.Round(s.WeightKG * 2.20462262185)
+}
+
+// Return Volume in KG
+func (s Set) VolumeKG() float64 {
+	return float64(s.Reps) * s.WeightKG
+}
+
+// Return Volume in LB
+func (s Set) VolumeLB() float64 {
+	return float64(s.Reps) * s.KGtoLB()
 }
 
 type Routine struct {
