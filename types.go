@@ -125,23 +125,23 @@ type Set struct {
 // VolumeLB
 func (s *Set) UnmarshalJSON(b []byte) error {
 	type mask Set
-	var st mask
+	var base mask
 
-	err := json.Unmarshal(b, &st)
+	err := json.Unmarshal(b, &base)
 	if err != nil {
 		return err
 	}
 
-	s.Index = st.Index
-	s.SetType = st.SetType
-	s.WeightKG = st.WeightKG
+	s.Index = base.Index
+	s.SetType = base.SetType
+	s.WeightKG = base.WeightKG
 	s.WeightLB = math.Round(s.WeightKG * 2.20462262185)
-	s.VolumeKG = s.WeightKG * float64(st.Reps)
-	s.VolumeLB = s.WeightLB * float64(st.Reps)
-	s.Reps = st.Reps
-	s.DistanceMeters = st.DistanceMeters
-	s.DurationSeconds = st.DurationSeconds
-	s.RPE = st.RPE
+	s.VolumeKG = s.WeightKG * float64(base.Reps)
+	s.VolumeLB = s.WeightLB * float64(base.Reps)
+	s.Reps = base.Reps
+	s.DistanceMeters = base.DistanceMeters
+	s.DurationSeconds = base.DurationSeconds
+	s.RPE = base.RPE
 
 	return nil
 }
