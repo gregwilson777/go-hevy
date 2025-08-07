@@ -1,10 +1,13 @@
-<p align="center">
+
+<b>Forked from https://github.com/swrm-io/go-hevy</b>
+
+<--!p align="center">
 <a href="https://github.com/swrm-io/go-heyv/actions/workflows/github-code-scanning/codeql">
     <img alt="CodeQL Status" src="https://github.com/swrm-io/go-hevy/actions/workflows/github-code-scanning/codeql/badge.svg">
 </a>
 <a href="https://pkg.go.dev/github.com/swrm-io/go-hevy">
     <img alt="GoDoc" src="https://pkg.go.dev/badge/github.com/swrm-io/go-hevy.svg">
-</a>
+</a!-->
 
 # go-hevy
 
