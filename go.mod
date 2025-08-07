@@ -1,4 +1,4 @@
-module github.com/swrm-io/go-hevy
+module github.com/gregwilson777/go-hevy
 
 go 1.22.3
 

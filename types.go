@@ -152,6 +152,7 @@ type Routine struct {
 	CreatedAt time.Time  `json:"created_at"` // ISO 8601 timestamp of when the routine was created.
 	UpdatedAt time.Time  `json:"updated_at"` // ISO 8601 timestamp of when the routine was last updated.
 	Exercises []Exercise `json:"exercises"`  // Exercise that belong to the workout.
+	FolderID  int        `json:"folder_id"`  // Folder ID that the routine belongs to
 }
 
 type Event struct {
