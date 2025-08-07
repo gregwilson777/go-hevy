@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/swrm-io/go-hevy"
+	"github.com/gregwilson777/go-hevy"
 )
 
 func TestRoutine(t *testing.T) {
