@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/gregwilson777/go-hevy"
 	"github.com/stretchr/testify/assert"
-	"github.com/swrm-io/go-hevy"
 )
 
 func TestUnmarshal(t *testing.T) {
