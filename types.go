@@ -147,12 +147,13 @@ func (s *Set) UnmarshalJSON(b []byte) error {
 }
 
 type Routine struct {
-	ID        uuid.UUID  `json:"id"`         // The routine ID.
-	Title     string     `json:"title"`      // The routine title.
-	CreatedAt time.Time  `json:"created_at"` // ISO 8601 timestamp of when the routine was created.
-	UpdatedAt time.Time  `json:"updated_at"` // ISO 8601 timestamp of when the routine was last updated.
-	Exercises []Exercise `json:"exercises"`  // Exercise that belong to the workout.
-	FolderID  int        `json:"folder_id"`  // Folder ID that the routine belongs to
+	ID         uuid.UUID  `json:"id"`         // The routine ID.
+	Title      string     `json:"title"`      // The routine title.
+	CreatedAt  time.Time  `json:"created_at"` // ISO 8601 timestamp of when the routine was created.
+	UpdatedAt  time.Time  `json:"updated_at"` // ISO 8601 timestamp of when the routine was last updated.
+	Exercises  []Exercise `json:"exercises"`  // Exercise that belong to the workout.
+	FolderID   int        `json:"folder_id"`  // Folder ID that the routine belongs to
+	FolderName string     `json:"-"`          // Obtained from the folder ID
 }
 
 type Event struct {
@@ -160,4 +161,12 @@ type Event struct {
 	ID        uuid.UUID `json:"id"`         // When deleted, this references the workout that was removed
 	DeletedAt time.Time `json:"deleted_at"` // when the type is deleted, when it was removed
 	Workout   Workout   `json:"workout"`    // On an update, output the workout
+}
+
+type RoutineFolder struct {
+	ID        int       `json:"id"` // The folder ID.
+	Index     int       `json:"index"`
+	Title     string    `json:"title"`
+	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"created_at"`
 }
